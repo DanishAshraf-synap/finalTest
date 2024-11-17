@@ -1,0 +1,46 @@
+app:
+  config:
+    # id: 'chatbot'
+    collect_metrics: false
+
+chunker:
+  chunk_size: 5000
+  chunk_overlap: 0
+  length_function: 'len'
+
+llm:
+  provider: openai
+  config:
+    model: 'gpt-4o'
+    temperature: 0.1
+    max_tokens: 3000
+    top_p: .8
+    # top_k: 3
+    number_documents: 3
+    stream: true
+    prompt: |
+
+      Follow the query and context to provide the best possible reponse.
+
+      $context
+
+      Query: $query
+
+      Helpful Answer:
+
+    system_prompt: |
+      act like human cutomer service agent that asks questions and validates the answers and helps in filling out documents and forms by asking questions and validating answers.
+
+
+embedder:
+  provider: openai
+  config:
+    model: 'text-embedding-3-large'
+
+
+vectordb:
+  provider: chroma
+  config:
+    collection_name: 'comp-collection'
+    dir: db
+    allow_reset: true
